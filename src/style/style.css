@@ -2,21 +2,17 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins", serif;
+  font-style: normal;
 }
 
 body {
   /* background-color: rgb(236, 249, 255); */
   padding: 12px 16px;
-  font-family: "Poppins", serif;
-  font-style: normal;
-}
-
-button {
-  line-height: 0;
 }
 
 /* HEADER SECTION */
-.navbar {
+.app-bar {
   /* background-color: #F5F5F7; */
   /* padding: 20px 16px; */
   border-radius: 16px;
@@ -26,12 +22,16 @@ button {
   gap: 8px;
 }
 
-.brand-icon {
+.brand-logo {
   background-color: #F5F5F7;
   border: none;
   padding: 16px;
   border-radius: 50%;
   line-height: 0;
+}
+
+.desktop-logo {
+  display: none;
 }
 
 form {
@@ -66,13 +66,23 @@ nav {
   background-color: #F5F5F7;
   border-radius: 20px;
   transition: .4s ease;
+  z-index: 2;
 }
 
-nav ul {
+.navbar {
   list-style: none;
   display: flex;
   justify-content: space-evenly;
   padding: 8px;
+  padding-right: 60px;
+  gap: 8px;
+  position: relative;
+}
+
+.navbar .add-note-btn {
+  position: absolute;
+  right: 16px;
+  top: -50%;
 }
 
 .expand-menu {
@@ -97,30 +107,42 @@ nav ul {
   border-radius: 16px;
 }
 
+.menu-item:hover p,
+.menu-item:hover svg path,
+.menu-item.active p,
+.menu-item.active svg path {
+  color: #4DA1A9;
+  fill: #4DA1A9;
+}
+
 
 /* END OF ASIDE SECTION */
 
 /* MAIN SECTION */
 main {
   transition: .4s ease;
+  position: relative;
+  /* border: 1px solid blue; */
 }
 
 .notes-list {
-  display: grid;
-  gap: 8px;
-  margin-top: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: 1fr;
+  /* border: 1px solid red; */
   transition: .4s ease;
+  margin-top: 16px;
+  /* display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: 1fr; */
 }
 
 .note {
+  width: 100%;
   background-color: #7E5CAD;
+  margin-bottom: 8px;
   border-radius: 16px;
   padding: 24px 16px 12px 16px;
   display: flex;
   flex-direction: column;
-  /* aspect-ratio: 4/3; */
   justify-content: space-between;
 }
 
@@ -145,6 +167,22 @@ main {
   background-color: #4DA1A9;
 }
 
+.note:nth-child(3) {
+  background-color: #F26B0F;
+}
+
+.note:nth-child(4) {
+  background-color: #AF1740;
+}
+
+.note:nth-child(5) {
+  background-color: #62825D;
+}
+
+.note:nth-child(6) {
+  background-color: #605EA1;
+}
+
 .note-action-wrapper {
   display: flex;
   border-radius: 20px;
@@ -163,6 +201,7 @@ main {
   padding: 8px;
   display: block;
   cursor: pointer;
+  line-height: 0;
   transition: .4s ease;
 }
 
@@ -190,7 +229,123 @@ main {
   margin-left: 16px;
 }
 
+.add-note-btn {
+  border: none;
+  background-color: #4DA1A9;
+  border-radius: 50%;
+  padding: 16px;
+  cursor: pointer;
+  line-height: 0;
+}
+
+main .add-note-btn {
+  position: sticky;
+  margin-left: auto;
+  bottom: 32px;
+  transform: translateX(-16px);
+
+  display: none;
+}
+
 /* END OF MAIN SECTION */
+
+.modal {
+  z-index: 999;
+  position: fixed;
+  opacity: 0;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+  transition: .4s ease;
+  pointer-events: none;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 600px;
+  background-color: rgba(245, 245, 247, 0.75);
+  backdrop-filter: blur(60px);
+  border-radius: 16px;
+  padding: 24px 16px;
+}
+
+.modal-dialog form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+
+}
+
+.close-modal-btn {
+  border: none;
+  background-color: transparent;
+  line-height: 0;
+  cursor: pointer;
+}
+
+#title-input {
+  background-color: transparent;
+  border: none;
+  flex-grow: 1;
+  padding: 8px 0;
+}
+
+#title-input,
+#title-input::placeholder  {
+  font-size: 18px;
+  font-weight: 500;
+  color: #2F2F2F;
+}
+
+#title-input:focus-visible,
+#note-body-input {
+  outline: none;
+}
+
+#note-body-input {
+  /* background-color: rgba(245, 245, 247, 0.2); */
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 8px 0;
+  border: none;
+}
+
+#note-body-input,
+#note-body-input::placeholder {
+  color: #2F2F2F;
+  font-size: 16px;
+}
+
+.submit-note {
+    background-color: #4DA1A9;
+    color: #F5F5F7;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+@media (min-width: 576px) {
+  .notes-list {
+    margin-right: -8px;
+  }
+
+  .note {
+    width: calc((100% / 2) - 8px);
+  }
+}
 
 @media (min-width: 768px) {
   main {
@@ -199,20 +354,39 @@ main {
   }
 
   .note {
-    aspect-ratio: 3.5/4;
+    width: calc((100% / 3) - 8px);
   }
 
 }
 
 @media (min-width: 992px) {
-  main {
-    max-width: 960px;
-    margin: 0 auto;
-    padding-left: 78px;
+  /* app bar section */
+  .app-bar {
+    background-color: #F5F5F7;
+    padding: 4px 0;
+    border-radius: 24px;
   }
 
+  .search-input {
+    display: block;
+    background-color: #FFFFFF;
+    padding: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .mobile-logo {
+    display: none;
+  }
+
+  .desktop-logo {
+    display: block;
+  }
+  /* end of app bar section */
+
+  /* SIDENAR SECTION */
   nav {
-    top: 96px;
+    top: 100px;
     right: unset;
     bottom: unset;
     width: 68px;
@@ -222,8 +396,9 @@ main {
     width: 192px;
   }
 
-  nav ul {
+  .navbar {
     flex-direction: column;
+    padding-right: 8px;
   }
 
 
@@ -258,6 +433,27 @@ main {
   nav.show ~ main {
     padding-left: 208px;
   }
+  /* END OF SIDEBAR SECTION */
+
+  /* MAIN SECTION */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding-left: 78px;
+  }
+
+  .note {
+    width: calc((100% / 4) - 8px);
+  }
+
+  main .add-note-btn {
+    display: block;
+  }
+
+  nav .add-note-btn {
+    display: none;
+  }
+  /* END OF MAIN SECTION */
 }
 
 @media (min-width:1200px) {
