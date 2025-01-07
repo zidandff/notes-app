@@ -40,6 +40,7 @@ function loadDataStorage(){
 function saveData(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(notesArr));
   render();
+  console.log(generateRandomColor())
 }
 
 function generateNoteObject(title, body){
@@ -49,7 +50,28 @@ function generateNoteObject(title, body){
     body,
     timestamp: Date.now(),
     archived: false,
+    color: generateRandomColor()
   }
+}
+
+function generateRandomColor(){
+  // array colors yg nanti akan diakses berdasarkan index random
+  const noteColors = ["taro", "teal", "blueberry", "emerald", "maroon", "yellow", "brown", "orange"];
+  const usedColors = notesArr.map(note => note.color); // arr warna yg sudah dipakai
+  const availableColors = noteColors.filter(color => !usedColors.includes(color)); // warna yang belum dipakai didapatkan dari filter usedcolor dan notecolors
+
+  // jika semua warna sudah dipakai buat random murni
+  if(availableColors.length == 0){
+    return noteColors[Math.floor(Math.random() * noteColors.length)];
+  }
+
+  // jika masih ada buat agar unique
+  return availableColors[Math.floor(Math.random() * availableColors.length)];
+
+  // TODO
+  // BUAT FUNGSI AGAR WARNA SELALU UNIQUE SETIAP BLOCK 
+  // SETIAP BLOCK ADALAH 8 NOTES(BERDASARKAN JUMLAH WARNA YG TERSEDIA)
+  // JADI SETIAP KELIPATAN 8 NOTES WARNA SELALU UNIQUE
 }
 
 function generateId(){
@@ -57,6 +79,7 @@ function generateId(){
 }
 
 document.addEventListener('DOMContentLoaded', ()=> { 
+
   const noteForm = document.getElementById('add-note-form');
   const expandMenuButton = document.querySelector('.expand-menu');
   const modal = document.querySelector('.modal');

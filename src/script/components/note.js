@@ -1,11 +1,12 @@
-export default function noteComponent({id, title, body, timestamp}){
+export default function noteComponent({id, title, body, timestamp, color}){
   const noteComponent = document.createElement('div');
-  noteComponent.classList.add('note');
-  noteComponent.setAttribute('id', id);
-
+  
   const month = ['Jan', 'Feb', 'Mar', "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const d = new Date(timestamp);
-
+  
+  noteComponent.classList.add('note');
+  noteComponent.classList.add(color);
+  noteComponent.setAttribute('id', id);
   noteComponent.innerHTML = `
         <div>
           <span class="note-date">${d.getDate()} ${month[d.getMonth()]}</span>

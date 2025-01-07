@@ -170,24 +170,30 @@ main {
   -webkit-line-clamp: 7;
 }
 
-.note:nth-child(2) {
+/* NOTE BACKGROUN COLOR LIST */
+.note.taro {
+  background-color: #7E5CAD;
+}
+.note.teal {
   background-color: #4DA1A9;
 }
-
-.note:nth-child(3) {
-  background-color: #F26B0F;
+.note.blueberry  {
+  background-color: #605EA1;
 }
-
-.note:nth-child(4) {
-  background-color: #AF1740;
-}
-
-.note:nth-child(5) {
+.note.emerald {
   background-color: #62825D;
 }
-
-.note:nth-child(6) {
-  background-color: #605EA1;
+.note.maroon {
+  background-color: #AF1740;
+}
+.note.yellow {
+  background-color: #FABC3F;
+}
+.note.brown {
+  background-color: #4E3636;
+}
+.note.orange {
+  background-color: #F26B0F;
 }
 
 .note-action-wrapper {
