@@ -6,7 +6,7 @@ export default function noteComponent({id, title, body, timestamp, color}){
   
   noteComponent.classList.add('note');
   noteComponent.classList.add(color);
-  noteComponent.setAttribute('id', id);
+  noteComponent.id = id;
   noteComponent.innerHTML = `
         <div>
           <span class="note-date">${d.getDate()} ${month[d.getMonth()]}</span>
@@ -27,7 +27,7 @@ export default function noteComponent({id, title, body, timestamp, color}){
                 <path d="M9.33301 4L11.9997 6.66667" stroke="#EAEAEA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
-            <button class="trash">
+            <button class="delete">
               <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4.66699 14C4.30033 14 3.98655 13.8696 3.72566 13.6087C3.46477 13.3478 3.33411 13.0338 3.33366 12.6667V4C3.14477 4 2.98655 3.936 2.85899 3.808C2.73144 3.68 2.66744 3.52178 2.66699 3.33333C2.66655 3.14489 2.73055 2.98667 2.85899 2.85867C2.98744 2.73067 3.14566 2.66667 3.33366 2.66667H6.00033C6.00033 2.47778 6.06433 2.31956 6.19233 2.192C6.32033 2.06444 6.47855 2.00044 6.66699 2H9.33366C9.52255 2 9.681 2.064 9.809 2.192C9.937 2.32 10.0008 2.47822 10.0003 2.66667H12.667C12.8559 2.66667 13.0143 2.73067 13.1423 2.85867C13.2703 2.98667 13.3341 3.14489 13.3337 3.33333C13.3332 3.52178 13.2692 3.68022 13.1417 3.80867C13.0141 3.93711 12.8559 4.00089 12.667 4V12.6667C12.667 13.0333 12.5366 13.3473 12.2757 13.6087C12.0148 13.87 11.7008 14.0004 11.3337 14H4.66699ZM11.3337 4H4.66699V12.6667H11.3337V4ZM6.66699 11.3333C6.85588 11.3333 7.01433 11.2693 7.14233 11.1413C7.27033 11.0133 7.33411 10.8551 7.33366 10.6667V6C7.33366 5.81111 7.26966 5.65289 7.14166 5.52533C7.01366 5.39778 6.85544 5.33378 6.66699 5.33333C6.47855 5.33289 6.32033 5.39689 6.19233 5.52533C6.06433 5.65378 6.00033 5.812 6.00033 6V10.6667C6.00033 10.8556 6.06433 11.014 6.19233 11.142C6.32033 11.27 6.47855 11.3338 6.66699 11.3333ZM9.33366 11.3333C9.52255 11.3333 9.681 11.2693 9.809 11.1413C9.937 11.0133 10.0008 10.8551 10.0003 10.6667V6C10.0003 5.81111 9.93633 5.65289 9.80833 5.52533C9.68033 5.39778 9.52211 5.33378 9.33366 5.33333C9.14522 5.33289 8.98699 5.39689 8.85899 5.52533C8.73099 5.65378 8.66699 5.812 8.66699 6V10.6667C8.66699 10.8556 8.73099 11.014 8.85899 11.142C8.98699 11.27 9.14522 11.3338 9.33366 11.3333Z" fill="#EAEAEA"/>
               </svg>                
@@ -41,6 +41,7 @@ export default function noteComponent({id, title, body, timestamp, color}){
         </div>
   `
 
+    // Event handler button expand option menu
     const optionBtn = noteComponent.querySelector('.expand-option-button');
     optionBtn.addEventListener('click', function(){
       
