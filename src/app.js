@@ -1,36 +1,76 @@
-const masonryGrid = new Masonry('.notes-list', {
-  itemSelector: '.note',
-  percentPosition: true,
-  gutter: 8,
-});
+import noteComponent from "./script/components/note.js";
+import masonryGrid from "./script/components/masonry.js"
 
-document.addEventListener('DOMContentLoaded', ()=> {
-  const optionButtons = document.querySelectorAll('.expand-option-button');
-  
-  // toggle option 
-  optionButtons.forEach(optionBtn => {
-    optionBtn.addEventListener('click', function(){
-      
-      // jika yg diklik sedang aktif tutup menu itu sendiri
-      if(optionBtn.classList.contains('show')){
-        optionBtn.classList.remove('show')
-      }else {
-        // jika yg diklik belum aktif, tutup semua menu
-        for (const optionBtn of optionButtons) {
-          optionBtn.classList.remove('show')
-        }
-  
-        // check apakah tombol aktif jika tidakbuka menu dari button yang di klik
-        if(!optionBtn.classList.contains('show')){
-          optionBtn.classList.add('show')
-        }
-      }
-  
-    })
+const STORAGE_KEY = 'notes';
+const notesArr = [];
+
+function render(){
+  const notesListContainer = document.querySelector('.notes-list');
+  notesListContainer.innerHTML = "";
+
+  notesArr.forEach(note => {
+    notesListContainer.appendChild(noteComponent(note));
   })
+
+  masonryGrid.reloadItems()
+  masonryGrid.layout()
+}
+
+
+function addNewNote(){
+  const titleInput = document.querySelector('#title-input').value;
+  const bodyInput = document.querySelector('#note-body-input').value;
+  const newNote = generateNoteObject(titleInput, bodyInput);
   
-  // expand menu sidebar
+  notesArr.push(newNote);
+  saveData();
+}
+
+// only call on first load, the rest will use noteArr memory
+function loadDataStorage(){
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  if(data !== null){
+    for (const note of data) {
+      notesArr.push(note);
+    }
+
+  }
+}
+
+function saveData(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(notesArr));
+  render();
+}
+
+function generateNoteObject(title, body){
+  return {
+    id: generateId(),
+    title,
+    body,
+    timestamp: Date.now(),
+    archived: false,
+  }
+}
+
+function generateId(){
+  return Date.now().toString(36).slice(2) + Math.random().toString(36).slice(2);
+}
+
+document.addEventListener('DOMContentLoaded', ()=> { 
+  const noteForm = document.getElementById('add-note-form');
   const expandMenuButton = document.querySelector('.expand-menu');
+  const modal = document.querySelector('.modal');
+  const openModalBtns = document.querySelectorAll('.add-note-btn');
+  const closeModal = document.getElementById('close-modal');
+
+  noteForm.addEventListener('submit', function(ev){
+    addNewNote();
+    noteForm.reset();
+    modal.classList.remove('show')
+    ev.preventDefault();
+  })
+
+  // expand menu sidebar
   expandMenuButton.addEventListener('click', function(){
     document.querySelector('nav').classList.toggle('show')
     setTimeout(() => {
@@ -39,9 +79,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
   })
 
   // open modal
-  const modal = document.querySelector('.modal');
-  const openModalBtns = document.querySelectorAll('.add-note-btn');
-
   openModalBtns.forEach( btn => {
     btn.addEventListener('click', ()=> {
       modal.classList.add('show')
@@ -49,7 +86,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
   } )
 
   // close modal
-  const closeModal = document.getElementById('close-modal');
   closeModal.addEventListener('click', () => {
     modal.classList.remove('show');
   })
@@ -61,6 +97,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
     }
   })
 
+  loadDataStorage();
+  render();
 })
 
 window.addEventListener('load', ()=> {
