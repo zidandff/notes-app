@@ -1,3 +1,6 @@
+import { deleteNote } from "../data/notesData.js";
+import { render } from "../../app.js";
+
 export default function noteComponent({id, title, body, timestamp, color}){
   const noteComponent = document.createElement('div');
   
@@ -61,6 +64,13 @@ export default function noteComponent({id, title, body, timestamp, color}){
         }
       }
   
+    })
+
+    // event handler delete button
+    const deleteBtn = noteComponent.querySelector('.delete');
+    deleteBtn.addEventListener('click', function(){
+      deleteNote(noteComponent.id)
+      render()
     })
 
   return noteComponent

@@ -2,7 +2,7 @@ import noteComponent from "./script/components/note.js";
 import masonryGrid from "./script/components/masonry.js";
 import {notes, loadDataStorage, insertNewNote} from "./script/data/notesData.js";
 
-function render(){
+export function render(){
   const notesListContainer = document.querySelector('.notes-list');
   notesListContainer.innerHTML = "";
 

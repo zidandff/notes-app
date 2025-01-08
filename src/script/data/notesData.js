@@ -1,6 +1,19 @@
 const notes = [];
 const STORAGE_KEY = 'notes';
 
+function deleteNote(id){
+  notes.splice(findId(id), 1);
+  saveData();
+}
+
+function findId(id){
+  for (const i in notes) {
+    if (notes[i].id == id) {
+      return i;
+    }
+  }
+}
+
 function insertNewNote(title, body){
   const newNote = generateNoteObject(title, body);
   notes.push(newNote);
@@ -58,4 +71,4 @@ function saveData(){
 }
 
 
-export {notes, loadDataStorage, insertNewNote};
+export {notes, loadDataStorage, insertNewNote, deleteNote};
