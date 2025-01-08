@@ -1,27 +1,18 @@
-import noteComponent from "./script/components/note.js";
 import masonryGrid from "./script/components/masonry.js";
-import {notes, loadDataStorage, insertNewNote, updateNote, searchNote} from "./script/data/notesData.js";
+import { searchNote } from "./script/data/notesData.js";
+import home from "./script/view/home.js";
+import { render } from "./script/utility.js";
 
-export function render(notesData = notes){
-  const notesListContainer = document.querySelector('.notes-list');
-  notesListContainer.innerHTML = "";
-
-  notesData.forEach(note => {
-    notesListContainer.appendChild(noteComponent(note));
-  })
-
-  masonryGrid.reloadItems()
-  masonryGrid.layout()
-}
+window.addEventListener('load', function(){
+  masonryGrid.layout();
+})
 
 document.addEventListener('DOMContentLoaded', ()=> { 
+  home();
 
-  const noteForm = document.getElementById('add-note-form');
   const expandMenuButton = document.querySelector('.expand-menu');
-  const modal = document.querySelector('.modal');
-  const openModalBtns = document.querySelectorAll('.add-note-btn');
-  const closeModal = document.getElementById('close-modal');
   const searchForm = document.getElementById('search-form');
+  const menuItemButtons = document.querySelectorAll('.nav-link');
 
   searchForm.addEventListener('submit', function(ev){
     ev.preventDefault();
@@ -31,22 +22,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
     render(searchResults);
   })
 
-  noteForm.addEventListener('submit', function(ev){
-    ev.preventDefault();
-    const titleInput = noteForm.querySelector('#title-input').value;
-    const bodyInput = noteForm.querySelector('#note-body-input').value;
-    const noteId = noteForm.querySelector('#note-id').value;
-
-    if(ev.submitter.id == 'add-note'){
-      insertNewNote(titleInput, bodyInput);
-    } else if(ev.submitter.id == "edit-note"){
-      updateNote(titleInput, bodyInput, noteId)
-    }
-
-    render();
-    noteForm.reset();
-    modal.classList.remove('show')
-  })
 
   // expand menu sidebar
   expandMenuButton.addEventListener('click', function(){
@@ -56,34 +31,25 @@ document.addEventListener('DOMContentLoaded', ()=> {
     }, 400);
   })
 
-  // open modal
-  openModalBtns.forEach( btn => {
-    btn.addEventListener('click', ()=> {
-      document.getElementById('add-note').removeAttribute('hidden')
-      document.getElementById('edit-note').setAttribute('hidden', '')
+  // menu sidebar
+  menuItemButtons.forEach(menuItem => {
+    menuItem.addEventListener('click', function(ev){
+      const target = ev.target;
+      menuItemButtons.forEach(menuItem => menuItem.classList.remove('active'));
+      target.classList.add('active')
 
-      noteForm.reset();
-      modal.classList.add('show')
+      switch (target.id) {
+        case "notes":
+          render('notes');
+          break;
+        case "archive":
+          render('archive');
+          break;
+        case "trash":
+          // home();
+          break;
+      }
     })
-  } )
-
-  // close modal
-  closeModal.addEventListener('click', () => {
-    modal.classList.remove('show');
   })
 
-  // when user click outside modal dialog
-  modal.addEventListener('click', (ev) => {
-    if(ev.target == modal){
-      modal.classList.remove('show')
-    }
-  })
-
-  loadDataStorage();
-  render();
 })
-
-window.addEventListener('load', ()=> {
-  masonryGrid.layout();
-})
-

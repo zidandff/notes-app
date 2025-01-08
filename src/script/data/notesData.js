@@ -30,6 +30,13 @@ function updateNote(title, body, id){
   saveData();
 }
 
+function archiveNote(id){
+  const noteIndex = findIndex(id);
+
+  notes[noteIndex].archived = true;
+  saveData();
+}
+
 function findIndex(id){
   for (const i in notes) {
     if (notes[i].id == id) {
@@ -90,4 +97,4 @@ function saveData(){
 }
 
 
-export {notes, loadDataStorage, insertNewNote, deleteNote, updateNote, searchNote};
+export {notes, loadDataStorage, insertNewNote, deleteNote, updateNote, searchNote, archiveNote};

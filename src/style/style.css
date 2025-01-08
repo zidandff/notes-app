@@ -212,7 +212,7 @@ main {
   border-radius: 50%;
   border: none;
   padding: 8px;
-  display: block;
+  /* display: block; */
   cursor: pointer;
   line-height: 0;
   transition: .4s ease;
@@ -435,6 +435,9 @@ main .add-note-btn {
     line-height: 20px;
     opacity: 0;
     transition: .4s ease;
+  }
+  .menu-item * {
+    pointer-events: none;
   }
   nav.show .menu-item p {
     opacity: 1;

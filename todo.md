@@ -2,6 +2,7 @@ TODO
 - Refactor fungsi render jadi modular
 - Buat module view home, trash, archived
 - edit delete functional to trash(delete after 30 days)
+- archived feature
 - full width note-list
 - generateRandomColor
   BUAT FUNGSI AGAR WARNA SELALU UNIQUE SETIAP BLOCK 
