@@ -66,11 +66,30 @@ export default function noteComponent({id, title, body, timestamp, color}){
   
     })
 
-    // event handler delete button
+    // event handler delete note button
     const deleteBtn = noteComponent.querySelector('.delete');
     deleteBtn.addEventListener('click', function(){
       deleteNote(noteComponent.id)
       render()
+    })
+
+    // event handler for update note
+    const editBtn = noteComponent.querySelector('.edit');
+    editBtn.addEventListener('click', function(){
+      const modal = document.querySelector('.modal');
+      const noteForm = document.getElementById('add-note-form');
+      const titleInput = noteForm.querySelector('#title-input');
+      const bodyInput = noteForm.querySelector('#note-body-input');
+      const noteId = noteForm.querySelector('#note-id');
+
+      modal.classList.add('show');
+      noteForm.reset();
+      titleInput.value = title;
+      bodyInput.value = body
+      noteId.value = id;
+
+      document.getElementById('edit-note').removeAttribute('hidden')
+      document.getElementById('add-note').setAttribute('hidden', '')
     })
 
   return noteComponent

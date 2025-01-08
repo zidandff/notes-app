@@ -1,6 +1,6 @@
 import noteComponent from "./script/components/note.js";
 import masonryGrid from "./script/components/masonry.js";
-import {notes, loadDataStorage, insertNewNote} from "./script/data/notesData.js";
+import {notes, loadDataStorage, insertNewNote, updateNote} from "./script/data/notesData.js";
 
 export function render(){
   const notesListContainer = document.querySelector('.notes-list');
@@ -26,10 +26,15 @@ document.addEventListener('DOMContentLoaded', ()=> {
     ev.preventDefault();
     const titleInput = noteForm.querySelector('#title-input').value;
     const bodyInput = noteForm.querySelector('#note-body-input').value;
+    const noteId = noteForm.querySelector('#note-id').value;
 
-    insertNewNote(titleInput, bodyInput);
+    if(ev.submitter.id == 'add-note'){
+      insertNewNote(titleInput, bodyInput);
+    } else if(ev.submitter.id == "edit-note"){
+      updateNote(titleInput, bodyInput, noteId)
+    }
+
     render();
-
     noteForm.reset();
     modal.classList.remove('show')
   })
@@ -45,6 +50,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
   // open modal
   openModalBtns.forEach( btn => {
     btn.addEventListener('click', ()=> {
+      document.getElementById('add-note').removeAttribute('hidden')
+      document.getElementById('edit-note').setAttribute('hidden', '')
+
+      noteForm.reset();
       modal.classList.add('show')
     })
   } )

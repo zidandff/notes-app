@@ -269,7 +269,10 @@
           placeholder="Isi Catatan"
           rows="8"
           required></textarea>
-        <button tabindex="3" type="submit" class="submit-note">Simpan</button>
+
+        <input type="hidden" id="note-id">
+        <button tabindex="3" type="submit" class="submit-note" id="add-note" hidden>Simpan</button>
+        <button tabindex="3" type="submit" class="submit-note" id="edit-note" hidden>Ubah</button>
       </form>
     </div>
   </div>

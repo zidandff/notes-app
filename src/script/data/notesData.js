@@ -6,6 +6,13 @@ function deleteNote(id){
   saveData();
 }
 
+function updateNote(title, body, id){
+  const noteIndex = findId(id);
+
+  notes[noteIndex].title = title;
+  notes[noteIndex].body = body;
+}
+
 function findId(id){
   for (const i in notes) {
     if (notes[i].id == id) {
@@ -71,4 +78,4 @@ function saveData(){
 }
 
 
-export {notes, loadDataStorage, insertNewNote, deleteNote};
+export {notes, loadDataStorage, insertNewNote, deleteNote, updateNote};
