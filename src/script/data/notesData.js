@@ -1,19 +1,36 @@
 const notes = [];
 const STORAGE_KEY = 'notes';
 
+function searchNote(keyword){
+  const normalizedKeyword = normalizeString(keyword)
+  const results = notes.filter(note => {
+    const normalizedTitle = normalizeString(note.title);
+    const normalizedBody = normalizeString(note.body);
+
+    return normalizedTitle.includes(normalizedKeyword) || normalizedBody.includes(normalizedKeyword);
+  } );
+  
+  return results
+}
+
+function normalizeString(string){
+  return string.toLowerCase().replace(/\s/g, '');
+}
+
 function deleteNote(id){
-  notes.splice(findId(id), 1);
+  notes.splice(findIndex(id), 1);
   saveData();
 }
 
 function updateNote(title, body, id){
-  const noteIndex = findId(id);
+  const noteIndex = findIndex(id);
 
   notes[noteIndex].title = title;
   notes[noteIndex].body = body;
+  saveData();
 }
 
-function findId(id){
+function findIndex(id){
   for (const i in notes) {
     if (notes[i].id == id) {
       return i;
@@ -65,11 +82,6 @@ function generateRandomColor(){
 
   // jika masih ada buat agar unique
   return availableColors[Math.floor(Math.random() * availableColors.length)];
-
-  // TODO
-  // BUAT FUNGSI AGAR WARNA SELALU UNIQUE SETIAP BLOCK 
-  // SETIAP BLOCK ADALAH 8 NOTES(BERDASARKAN JUMLAH WARNA YG TERSEDIA)
-  // JADI SETIAP KELIPATAN 8 NOTES WARNA SELALU UNIQUE
 }
 
 // only call on first load, the rest will use noteArr memory
@@ -78,4 +90,4 @@ function saveData(){
 }
 
 
-export {notes, loadDataStorage, insertNewNote, deleteNote, updateNote};
+export {notes, loadDataStorage, insertNewNote, deleteNote, updateNote, searchNote};

@@ -1,12 +1,12 @@
 import noteComponent from "./script/components/note.js";
 import masonryGrid from "./script/components/masonry.js";
-import {notes, loadDataStorage, insertNewNote, updateNote} from "./script/data/notesData.js";
+import {notes, loadDataStorage, insertNewNote, updateNote, searchNote} from "./script/data/notesData.js";
 
-export function render(){
+export function render(notesData = notes){
   const notesListContainer = document.querySelector('.notes-list');
   notesListContainer.innerHTML = "";
 
-  notes.forEach(note => {
+  notesData.forEach(note => {
     notesListContainer.appendChild(noteComponent(note));
   })
 
@@ -21,6 +21,15 @@ document.addEventListener('DOMContentLoaded', ()=> {
   const modal = document.querySelector('.modal');
   const openModalBtns = document.querySelectorAll('.add-note-btn');
   const closeModal = document.getElementById('close-modal');
+  const searchForm = document.getElementById('search-form');
+
+  searchForm.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    const keywordInput = document.querySelector('.search-input');
+    const searchResults = searchNote(keywordInput.value);
+
+    render(searchResults);
+  })
 
   noteForm.addEventListener('submit', function(ev){
     ev.preventDefault();
