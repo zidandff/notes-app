@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
           render('archive');
           break;
         case "trash":
-          // home();
+          render('trash');
           break;
       }
     })

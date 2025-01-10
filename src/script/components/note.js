@@ -1,4 +1,4 @@
-import { archiveNote, unarchiveNote, deleteNote } from "../data/notesData.js";
+import { archiveNote, unarchiveNote, moveToTrash } from "../data/notesData.js";
 import { render } from "../utility.js";
 
 export default function noteComponent({id, title, body, timestamp, color, archived}){
@@ -74,7 +74,7 @@ export default function noteComponent({id, title, body, timestamp, color, archiv
     // event handler delete note button
     const deleteBtn = noteComponent.querySelector('.delete');
     deleteBtn.addEventListener('click', function(){
-      deleteNote(noteComponent.id)
+      moveToTrash(noteComponent.id)
       render("notes")
     })
 

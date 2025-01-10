@@ -6,12 +6,13 @@ function render(notesData){
   let data
   switch (notesData) {
     case "notes":
-      data = notes.filter(note => !note.archived)
+      data = notes.filter(note => !note.archived && !note.isDeleted)
       break;
     case "archive":
-      data = notes.filter(note => note.archived);
+      data = notes.filter(note => note.archived & !note.isDeleted);
       break;
     case "trash":
+      data = notes.filter(note => note.isDeleted);
       break;
   }
 

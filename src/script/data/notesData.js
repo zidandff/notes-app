@@ -17,9 +17,29 @@ function normalizeString(string){
   return string.toLowerCase().replace(/\s/g, '');
 }
 
-function deleteNote(id){
-  notes.splice(findIndex(id), 1);
+function moveToTrash(id){
+  // notes.splice(findIndex(id), 1);
+  const noteIndex = findIndex(id);
+  notes[noteIndex].isDeleted = true;
+  notes[noteIndex].deletedAt = Date.now()
+  deletePermanent(id);
   saveData();
+}
+
+function deletePermanent(id){
+  const noteIndex = findIndex(id);
+
+  const countDelete = (() => {
+    const deadline = new Date("Jan 10, 2025 21:27:30").getTime();
+    const now = Date.now();
+    console.log(deadline)
+    console.log(now)
+    if(deadline < now){
+      console.log("HAPUSSS");
+      clearInterval(countDelete);
+    }
+    return
+  }, 1000);
 }
 
 function updateNote(title, body, id){
@@ -75,7 +95,9 @@ function generateNoteObject(title, body){
     body,
     timestamp: Date.now(),
     archived: false,
-    color: generateRandomColor()
+    color: generateRandomColor(),
+    isDeleted,
+    deletedAt,
   }
 }
 
@@ -101,4 +123,4 @@ function saveData(){
 }
 
 
-export {notes, loadDataStorage, insertNewNote, deleteNote, updateNote, searchNote, archiveNote, unarchiveNote};
+export {notes, loadDataStorage, insertNewNote, moveToTrash, updateNote, searchNote, archiveNote, unarchiveNote};
