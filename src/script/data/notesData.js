@@ -37,6 +37,13 @@ function archiveNote(id){
   saveData();
 }
 
+function unarchiveNote(id){
+  const noteIndex = findIndex(id);
+
+  notes[noteIndex].archived = false;
+  saveData();
+}
+
 function findIndex(id){
   for (const i in notes) {
     if (notes[i].id == id) {
@@ -77,19 +84,16 @@ function generateId(){
 }
 
 function generateRandomColor(){
-  // array colors yg nanti akan diakses berdasarkan index random
   const noteColors = ["taro", "teal", "blueberry", "emerald", "maroon", "yellow", "brown", "orange"];
-  const usedColors = notes.map(note => note.color); // arr warna yg sudah dipakai
-  const availableColors = noteColors.filter(color => !usedColors.includes(color)); // warna yang belum dipakai didapatkan dari filter usedcolor dan notecolors
+  const groupStartIndex = Math.floor(notes.length / 8) * 8;
+  const currentGroup = notes.slice(groupStartIndex);
+  
+  const usedColors = currentGroup.map(note => note.color);
+  const availableColors = noteColors.filter(color => !usedColors.includes(color)); // // array warna tersedia yg nanti akan diakses berdasarkan index random
 
-  // jika semua warna sudah dipakai buat random murni
-  if(availableColors.length == 0){
-    return noteColors[Math.floor(Math.random() * noteColors.length)];
-  }
-
-  // jika masih ada buat agar unique
   return availableColors[Math.floor(Math.random() * availableColors.length)];
 }
+
 
 // only call on first load, the rest will use noteArr memory
 function saveData(){
@@ -97,4 +101,4 @@ function saveData(){
 }
 
 
-export {notes, loadDataStorage, insertNewNote, deleteNote, updateNote, searchNote, archiveNote};
+export {notes, loadDataStorage, insertNewNote, deleteNote, updateNote, searchNote, archiveNote, unarchiveNote};

@@ -1,4 +1,4 @@
-import { archiveNote, deleteNote } from "../data/notesData.js";
+import { archiveNote, unarchiveNote, deleteNote } from "../data/notesData.js";
 import { render } from "../utility.js";
 
 export default function noteComponent({id, title, body, timestamp, color, archived}){
@@ -83,6 +83,12 @@ export default function noteComponent({id, title, body, timestamp, color, archiv
     archiveBtn.addEventListener('click', function(){
       archiveNote(id)
       render("notes")
+    })
+
+    const unarchiveButton = noteComponent.querySelector('.unarchive-button');
+    unarchiveButton.addEventListener('click', function(){
+      unarchiveNote(id);
+      render("archive")
     })
 
     // event handler for update note
