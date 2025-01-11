@@ -21,25 +21,36 @@ function moveToTrash(id){
   // notes.splice(findIndex(id), 1);
   const noteIndex = findIndex(id);
   notes[noteIndex].isDeleted = true;
-  notes[noteIndex].deletedAt = Date.now()
-  deletePermanent(id);
+  notes[noteIndex].deleteAt = Date.now() + (10 * 1000);
+  countDelete(noteIndex);
   saveData();
 }
 
-function deletePermanent(id){
+function restore(id){
   const noteIndex = findIndex(id);
+  notes[noteIndex].isDeleted = false;
+  notes[noteIndex].deleteAt = null
+  
+  saveData();
+}
 
-  const countDelete = (() => {
-    const deadline = new Date("Jan 10, 2025 21:27:30").getTime();
+function countDelete(index) {
+  // console.log(notes[index].deleteAt)
+  const count = setInterval(() => {
     const now = Date.now();
-    console.log(deadline)
-    console.log(now)
-    if(deadline < now){
-      console.log("HAPUSSS");
-      clearInterval(countDelete);
+    console.log(`${now} \n ${notes[index].deleteAt}`)
+    if(now > notes[index].deleteAt){
+      console.log('hapuss')
+      notes.splice(index, 1);
+      saveData();
+      clearInterval(count);
     }
-    return
   }, 1000);
+}
+
+function deletePermanent(id){
+  notes.splice(findIndex(id), 1);
+  saveData();
 }
 
 function updateNote(title, body, id){
@@ -97,7 +108,7 @@ function generateNoteObject(title, body){
     archived: false,
     color: generateRandomColor(),
     isDeleted,
-    deletedAt,
+    deleteAt,
   }
 }
 
@@ -123,4 +134,4 @@ function saveData(){
 }
 
 
-export {notes, loadDataStorage, insertNewNote, moveToTrash, updateNote, searchNote, archiveNote, unarchiveNote};
+export {notes, loadDataStorage, insertNewNote, moveToTrash, updateNote, searchNote, archiveNote, unarchiveNote, deletePermanent, restore};
