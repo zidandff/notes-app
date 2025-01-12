@@ -87,7 +87,11 @@ export default function noteComponent({id, title, body, timestamp, color, archiv
     const deleteBtn = noteComponent.querySelector('.delete');
     deleteBtn.addEventListener('click', function(){
       moveToTrash(noteComponent.id)
-      render("notes")
+      if(archived){
+        render('archive')
+      } else {
+        render("notes")
+      }
     })
 
     // event handler delete permanent

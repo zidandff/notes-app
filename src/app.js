@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
       const titleInput = noteForm.querySelector('#title-input').value;
       const bodyInput = noteForm.querySelector('#note-body-input').value;
       const noteId = noteForm.querySelector('#note-id').value;
+      const activeTab = document.querySelector('.menu-item.active');
   
       if(ev.submitter.id == 'add-note'){
         insertNewNote(titleInput, bodyInput);
@@ -68,8 +69,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
         updateNote(titleInput, bodyInput, noteId);
       }
   
-      
-      render("notes");
+      // determine which tab will be render after edit notes
+      if(activeTab.id == 'notes'){
+        render("notes");
+      } else if(activeTab.id == 'archive') {
+        render('archive');
+      }
       noteForm.reset();
       modal.classList.remove('show')
     })
