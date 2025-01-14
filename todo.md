@@ -12,3 +12,5 @@ TODO
 - add sweetalert
 - refactor to OOP
 - buat custom event saat ada perubahan data untuk render(), autoDelete() dan fungsi lain
+- BUG (mobile device) navigasi kadang tidak berfungsi render data tidak bekerja dengan baik. class "active" tidak ditambahkan walau sudah di touch
+(SOLVED: tambahkan pointer events none pada children element) ✅

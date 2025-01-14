@@ -96,6 +96,10 @@ nav {
   line-height: 0;
 }
 
+.menu-item * {
+  pointer-events: none;
+}
+
 
 .menu-item p {
   display: none;
@@ -436,9 +440,7 @@ main .add-note-btn {
     opacity: 0;
     transition: .4s ease;
   }
-  .menu-item * {
-    pointer-events: none;
-  }
+
   nav.show .menu-item p {
     opacity: 1;
   }

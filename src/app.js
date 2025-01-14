@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
       const target = ev.target;
       menuItemButtons.forEach(menuItem => menuItem.classList.remove('active'));
       target.classList.add('active')
+      console.log(target)
 
       switch (target.id) {
         case "notes":
