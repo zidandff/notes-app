@@ -1,5 +1,5 @@
 import masonryGrid from "./script/components/masonry.js";
-import { loadDataStorage, notes, searchNote, insertNewNote, updateNote } from "./script/data/notesData.js";
+import { loadDataStorage, notes, searchNote, insertNewNote, updateNote, autoDelete } from "./script/data/notesData.js";
 import { render } from "./script/utility.js";
 
 window.addEventListener('load', function(){
@@ -9,6 +9,8 @@ window.addEventListener('load', function(){
 document.addEventListener('DOMContentLoaded', ()=> {
   loadDataStorage();
   render("notes")
+  autoDelete();
+
   const expandMenuButton = document.querySelector('.expand-menu');
   const searchForm = document.getElementById('search-form');
   const menuItemButtons = document.querySelectorAll('.nav-link');

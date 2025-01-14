@@ -21,8 +21,9 @@ function moveToTrash(id){
   // notes.splice(findIndex(id), 1);
   const noteIndex = findIndex(id);
   notes[noteIndex].isDeleted = true;
+  // notes[noteIndex].deleteAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
   notes[noteIndex].deleteAt = Date.now() + (10 * 1000);
-  countDelete(noteIndex);
+  // countDelete(noteIndex);
   saveData();
 }
 
@@ -34,23 +35,48 @@ function restore(id){
   saveData();
 }
 
-function countDelete(index) {
-  // console.log(notes[index].deleteAt)
-  const count = setInterval(() => {
-    const now = Date.now();
-    console.log(`${now} \n ${notes[index].deleteAt}`)
-    if(now > notes[index].deleteAt){
-      console.log('hapuss')
-      notes.splice(index, 1);
-      saveData();
-      clearInterval(count);
-    }
-  }, 1000);
-}
+// function countDelete(index) {
+//   // console.log(notes[index].deleteAt)
+//   const count = setInterval(() => {
+//     const now = Date.now();
+//     console.log(`${now} \n ${notes[index].deleteAt}`)
+//     if(now > notes[index].deleteAt){
+//       console.log('hapuss')
+//       notes.splice(index, 1);
+//       saveData();
+//       clearInterval(count);
+//     }
+//   }, 1000);
+// }
 
 function deletePermanent(id){
+  const noteIndex = findIndex(id);
+  if(!noteIndex){
+    console.log('id not found')
+    return
+  }
   notes.splice(findIndex(id), 1);
   saveData();
+}
+
+
+function autoDelete(){
+  notes.filter(note => note.isDeleted).forEach(note => {
+    console.log(new Date(note.deleteAt))
+  })
+  const count = setInterval(function() {
+    const deletedNotes = notes.filter(note => note.isDeleted);
+    if(deletedNotes.length > 0) {
+      deletedNotes.forEach(note => {
+        if(note.deleteAt < Date.now()){
+          deletePermanent(note.id);
+        }
+      })
+    } else {
+      clearInterval(count);
+    }
+  }, 1000)
+
 }
 
 function updateNote(title, body, id){
@@ -107,8 +133,8 @@ function generateNoteObject(title, body){
     timestamp: Date.now(),
     archived: false,
     color: generateRandomColor(),
-    isDeleted,
-    deleteAt,
+    isDeleted: false,
+    deleteAt: 0,
   }
 }
 
@@ -131,7 +157,8 @@ function generateRandomColor(){
 // only call on first load, the rest will use noteArr memory
 function saveData(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+  autoDelete();
 }
 
 
-export {notes, loadDataStorage, insertNewNote, moveToTrash, updateNote, searchNote, archiveNote, unarchiveNote, deletePermanent, restore};
+export {notes, loadDataStorage, insertNewNote, moveToTrash, updateNote, searchNote, archiveNote, unarchiveNote, deletePermanent, restore, autoDelete};

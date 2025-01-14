@@ -10,3 +10,5 @@ TODO
   JADI SETIAP KELIPATAN 8 NOTES WARNA SELALU UNIQUE 
 - pilih sendiri warna note
 - add sweetalert
+- refactor to OOP
+- buat custom event saat ada perubahan data untuk render(), autoDelete() dan fungsi lain
