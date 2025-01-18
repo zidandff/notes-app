@@ -5,12 +5,12 @@ TODO
 - archived feature ✅
 - full width note-list
 - use grid auto fit
-- sorting to newest
+- sorting to last edited/added ✅
 - generateRandomColor ✅
 - pilih sendiri warna note
 - add sweetalert
 - refactor to OOP
-- buat custom event saat ada perubahan data untuk render(), autoDelete() dan fungsi lain
+- reafactor fungsi render jadi custom event ✅
 - create routing
 
 <!-- BUG -->

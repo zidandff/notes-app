@@ -1,6 +1,20 @@
 const notes = [];
 const STORAGE_KEY = 'notes';
 
+function generateNoteObject(title, body){
+  return {
+    id: generateId(),
+    title,
+    body,
+    timestamp: Date.now(),
+    lastEdited: Date.now(),
+    archived: false,
+    color: generateRandomColor(),
+    isDeleted: false,
+    deleteAt: 0,
+  }
+}
+
 function searchNote(keyword){
   const normalizedKeyword = normalizeString(keyword)
   const results = notes.filter(note => {
@@ -22,6 +36,7 @@ function moveToTrash(id){
   const noteIndex = findIndex(id);
   notes[noteIndex].isDeleted = true;
   notes[noteIndex].deleteAt = Date.now() + (7 * 24 * 60 * 60 * 1000); // create epoch time 7 days from now
+  notes[noteIndex].lastEdited = Date.now();
   saveData();
 }
 
@@ -29,23 +44,10 @@ function restore(id){
   const noteIndex = findIndex(id);
   notes[noteIndex].isDeleted = false;
   notes[noteIndex].deleteAt = null
-  
+  notes[noteIndex].lastEdited = Date.now();
+
   saveData();
 }
-
-// function countDelete(index) {
-//   // console.log(notes[index].deleteAt)
-//   const count = setInterval(() => {
-//     const now = Date.now();
-//     console.log(`${now} \n ${notes[index].deleteAt}`)
-//     if(now > notes[index].deleteAt){
-//       console.log('hapuss')
-//       notes.splice(index, 1);
-//       saveData();
-//       clearInterval(count);
-//     }
-//   }, 1000);
-// }
 
 function deletePermanent(id){
   const noteIndex = findIndex(id);
@@ -56,7 +58,6 @@ function deletePermanent(id){
   notes.splice(findIndex(id), 1);
   saveData();
 }
-
 
 function autoDelete(){
   const count = setInterval(function() {
@@ -79,6 +80,7 @@ function updateNote(title, body, id){
 
   notes[noteIndex].title = title;
   notes[noteIndex].body = body;
+  notes[noteIndex].lastEdited = Date.now();
   saveData();
 }
 
@@ -86,6 +88,8 @@ function archiveNote(id){
   const noteIndex = findIndex(id);
 
   notes[noteIndex].archived = true;
+  notes[noteIndex].lastEdited = Date.now();
+
   saveData();
 }
 
@@ -93,6 +97,8 @@ function unarchiveNote(id){
   const noteIndex = findIndex(id);
 
   notes[noteIndex].archived = false;
+  notes[noteIndex].lastEdited = Date.now();
+
   saveData();
 }
 
@@ -118,19 +124,6 @@ function loadDataStorage(){
     for (const note of data) {
       notes.push(note);
     }
-  }
-}
-
-function generateNoteObject(title, body){
-  return {
-    id: generateId(),
-    title,
-    body,
-    timestamp: Date.now(),
-    archived: false,
-    color: generateRandomColor(),
-    isDeleted: false,
-    deleteAt: 0,
   }
 }
 

@@ -111,7 +111,7 @@ function renderEventHandler(event) {
   let data
   switch (event.detail.renderType) {
     case "notes":
-      data = notes.filter(note => !note.archived && !note.isDeleted)
+      data = notes.filter(note => !note.archived && !note.isDeleted)      
       break;
     case "archive":
       data = notes.filter(note => note.archived & !note.isDeleted);
@@ -124,6 +124,9 @@ function renderEventHandler(event) {
   const notesListContainer = document.querySelector('.notes-list');
   notesListContainer.innerHTML = "";
 
+  // sorting object array
+  // https://www.w3schools.com/js/js_array_sort.asp
+  data = data.toSorted((a, b) => a.lastEdited - b.lastEdited).toReversed();
   data.forEach(note => {
     notesListContainer.appendChild(noteComponent(note));
   })
