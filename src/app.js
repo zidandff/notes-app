@@ -1,6 +1,7 @@
 import masonryGrid from "./script/components/masonry.js";
+import noteComponent from "./script/components/note.js";
 import { loadDataStorage, notes, searchNote, insertNewNote, updateNote, autoDelete } from "./script/data/notesData.js";
-import { render } from "./script/utility.js";
+// import { render } from "./script/utility.js";
 
 window.addEventListener('load', function(){
   masonryGrid.layout();
@@ -8,7 +9,7 @@ window.addEventListener('load', function(){
 
 document.addEventListener('DOMContentLoaded', ()=> {
   loadDataStorage();
-  render("notes")
+  dispatchRenderEvent("notes")
   autoDelete();
 
   const expandMenuButton = document.querySelector('.expand-menu');
@@ -42,17 +43,16 @@ document.addEventListener('DOMContentLoaded', ()=> {
       const target = ev.target;
       menuItemButtons.forEach(menuItem => menuItem.classList.remove('active'));
       target.classList.add('active')
-      console.log(target)
 
       switch (target.id) {
         case "notes":
-          render('notes');
+          dispatchRenderEvent('notes');
           break;
         case "archive":
-          render('archive');
+          dispatchRenderEvent('archive');
           break;
         case "trash":
-          render('trash');
+          dispatchRenderEvent('trash');
           break;
       }
     })
@@ -74,9 +74,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
   
       // determine which tab will be render after edit notes
       if(activeTab.id == 'notes'){
-        render("notes");
+        dispatchRenderEvent("notes");
       } else if(activeTab.id == 'archive') {
-        render('archive');
+        dispatchRenderEvent('archive');
       }
       noteForm.reset();
       modal.classList.remove('show')
@@ -106,3 +106,36 @@ document.addEventListener('DOMContentLoaded', ()=> {
     })
 
 })
+
+function renderEventHandler(event) {
+  let data
+  switch (event.detail.renderType) {
+    case "notes":
+      data = notes.filter(note => !note.archived && !note.isDeleted)
+      break;
+    case "archive":
+      data = notes.filter(note => note.archived & !note.isDeleted);
+      break;
+    case "trash":
+      data = notes.filter(note => note.isDeleted);
+      break;
+  }
+
+  const notesListContainer = document.querySelector('.notes-list');
+  notesListContainer.innerHTML = "";
+
+  data.forEach(note => {
+    notesListContainer.appendChild(noteComponent(note));
+  })
+
+  masonryGrid.reloadItems()
+  masonryGrid.layout()
+}
+
+export function dispatchRenderEvent(renderType){
+  const renderEvent = new CustomEvent('render', {detail: {renderType}});
+  document.dispatchEvent(renderEvent);
+}
+
+
+document.addEventListener('render', renderEventHandler);

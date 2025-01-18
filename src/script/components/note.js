@@ -1,5 +1,6 @@
 import { archiveNote, unarchiveNote, moveToTrash, deletePermanent, restore } from "../data/notesData.js";
-import { render } from "../utility.js";
+import {dispatchRenderEvent} from "../../app.js"
+// import { render } from "../utility.js";
 
 export default function noteComponent({id, title, body, timestamp, color, archived, isDeleted}){
   const noteComponent = document.createElement('div');
@@ -88,9 +89,9 @@ export default function noteComponent({id, title, body, timestamp, color, archiv
     deleteBtn.addEventListener('click', function(){
       moveToTrash(noteComponent.id)
       if(archived){
-        render('archive')
+        dispatchRenderEvent('archive')
       } else {
-        render("notes")
+        dispatchRenderEvent("notes")
       }
     })
 
@@ -98,27 +99,27 @@ export default function noteComponent({id, title, body, timestamp, color, archiv
     const deletePermanentBtn = noteComponent.querySelector('.delete-permanent');
     deletePermanentBtn.addEventListener('click', function(){
       deletePermanent(id);
-      render('trash');
+      dispatchRenderEvent('trash');
     })
 
     // restore handler
     const restoreBtn = noteComponent.querySelector('.restore');
     restoreBtn.addEventListener('click', function() {
       restore(id);
-      render('trash')
+      dispatchRenderEvent('trash')
     })
 
     // event handler for archive note
     const archiveBtn = noteComponent.querySelector('.archive-button');
     archiveBtn.addEventListener('click', function(){
       archiveNote(id)
-      render("notes")
+      dispatchRenderEvent("notes")
     })
 
     const unarchiveButton = noteComponent.querySelector('.unarchive-button');
     unarchiveButton.addEventListener('click', function(){
       unarchiveNote(id);
-      render("archive")
+      dispatchRenderEvent("archive")
     })
 
     // event handler for update note

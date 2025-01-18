@@ -21,9 +21,7 @@ function moveToTrash(id){
   // notes.splice(findIndex(id), 1);
   const noteIndex = findIndex(id);
   notes[noteIndex].isDeleted = true;
-  // notes[noteIndex].deleteAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
-  notes[noteIndex].deleteAt = Date.now() + (10 * 1000);
-  // countDelete(noteIndex);
+  notes[noteIndex].deleteAt = Date.now() + (7 * 24 * 60 * 60 * 1000); // create epoch time 7 days from now
   saveData();
 }
 
@@ -61,9 +59,6 @@ function deletePermanent(id){
 
 
 function autoDelete(){
-  notes.filter(note => note.isDeleted).forEach(note => {
-    console.log(new Date(note.deleteAt))
-  })
   const count = setInterval(function() {
     const deletedNotes = notes.filter(note => note.isDeleted);
     if(deletedNotes.length > 0) {
@@ -115,6 +110,7 @@ function insertNewNote(title, body){
   saveData();
 }
 
+// only call on first load, the rest will use noteArr memory
 function loadDataStorage(){
   const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
@@ -153,8 +149,6 @@ function generateRandomColor(){
   return availableColors[Math.floor(Math.random() * availableColors.length)];
 }
 
-
-// only call on first load, the rest will use noteArr memory
 function saveData(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
   autoDelete();
