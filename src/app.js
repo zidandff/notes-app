@@ -1,6 +1,6 @@
 import masonryGrid from "./script/components/masonry.js";
 import noteComponent from "./script/components/note.js";
-import { loadDataStorage, notes, searchNote, insertNewNote, updateNote, autoDelete } from "./script/data/notesData.js";
+import { loadDataStorage, notes, searchNote, insertNewNote, updateNote, autoDelete, searchResults } from "./script/data/notesData.js";
 // import { render } from "./script/utility.js";
 
 window.addEventListener('load', function(){
@@ -22,10 +22,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
   searchForm.addEventListener('submit', function(ev){
     ev.preventDefault();
-    const keywordInput = document.querySelector('.search-input');
-    const searchResults = searchNote(keywordInput.value);
-
-    render(searchResults);
+    const keywordInput = document.querySelector('.search-input').value;
+    // const searchResults = searchNote(keywordInput.value);
+    const activeTab = document.querySelector('.menu-item.active');
+    
+    searchNote(keywordInput, activeTab.id);
+    dispatchRenderEvent('search');
   })
 
 
@@ -119,6 +121,8 @@ function renderEventHandler(event) {
     case "trash":
       data = notes.filter(note => note.isDeleted);
       break;
+    case "search":
+      data = searchResults;
   }
 
   const notesListContainer = document.querySelector('.notes-list');

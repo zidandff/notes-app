@@ -1,4 +1,5 @@
 const notes = [];
+let searchResults = [];
 const STORAGE_KEY = 'notes';
 
 function generateNoteObject(title, body){
@@ -15,16 +16,27 @@ function generateNoteObject(title, body){
   }
 }
 
-function searchNote(keyword){
+function searchNote(keyword, category){
   const normalizedKeyword = normalizeString(keyword)
-  const results = notes.filter(note => {
+  let results;
+  switch(category) {
+    case "notes":
+      results = notes.filter(note => !note.archived && !note.isDeleted);
+      break;
+    case "archive":
+      results = notes.filter(note => note.archived & !note.isDeleted);
+      break;
+    case "trash":
+      results = notes.filter(note => note.isDeleted);
+      break;
+  }
+
+  searchResults = results.filter(note => {
     const normalizedTitle = normalizeString(note.title);
     const normalizedBody = normalizeString(note.body);
 
     return normalizedTitle.includes(normalizedKeyword) || normalizedBody.includes(normalizedKeyword);
   } );
-  
-  return results
 }
 
 function normalizeString(string){
@@ -147,5 +159,4 @@ function saveData(){
   autoDelete();
 }
 
-
-export {notes, loadDataStorage, insertNewNote, moveToTrash, updateNote, searchNote, archiveNote, unarchiveNote, deletePermanent, restore, autoDelete};
+export {notes, loadDataStorage, insertNewNote, moveToTrash, updateNote, searchNote, archiveNote, unarchiveNote, deletePermanent, restore, autoDelete, searchResults};
