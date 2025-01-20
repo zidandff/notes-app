@@ -7,6 +7,7 @@ TODO
 - use grid auto fit
 - sorting to last edited/added ✅
 - generateRandomColor ✅
+- see full note
 - pilih sendiri warna note
 - add sweetalert
 - refactor to OOP
