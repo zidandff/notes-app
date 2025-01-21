@@ -41,12 +41,13 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
   // menu sidebar
   menuItemButtons.forEach(menuItem => {
-    menuItem.addEventListener('click', function(ev){
-      const target = ev.target;
+    menuItem.addEventListener('click', function(){
+      // const target = ev.target.closest(".menu-item");
+      const target = menuItem.id;
       menuItemButtons.forEach(menuItem => menuItem.classList.remove('active'));
-      target.classList.add('active')
+      menuItem.classList.add('active')
 
-      switch (target.id) {
+      switch (target) {
         case "notes":
           dispatchRenderEvent('notes');
           break;

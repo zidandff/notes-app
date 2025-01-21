@@ -97,7 +97,7 @@ nav {
 }
 
 .menu-item * {
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 

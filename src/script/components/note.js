@@ -60,86 +60,93 @@ export default function noteComponent({id, title, body, timestamp, color, archiv
             </button>
           </div>
         </div>
-  `
+  `;
 
-    // Event handler button expand option menu
-    const optionBtn = noteComponent.querySelector('.expand-option-button');
-    optionBtn.addEventListener('click', function(){
-      
-      // jika yg diklik sedang aktif tutup menu itu sendiri
-      if(this.classList.contains('show')){
-        this.classList.remove('show')
-      }else {
-        // jika yg diklik belum aktif, tutup semua menu
-        const optionButtons = document.querySelectorAll('.expand-option-button');
-        for (const optionBtn of optionButtons) {
-          optionBtn.classList.remove('show')
-        }
-  
-        // check apakah tombol aktif jika tidak, buka menu dari button yang di klik
-        if(!this.classList.contains('show')){
-          this.classList.add('show')
-        }
+  // Stop event propagation to note action wrapper to prevent trigger notes event handler
+  const noteActionWrapper = noteComponent.querySelector('.note-action-wrapper');
+  noteActionWrapper.addEventListener('click', (e)=> {
+    e.stopPropagation();
+  })
+
+  // Event handler button expand option menu
+  const optionBtn = noteComponent.querySelector('.expand-option-button');
+  optionBtn.addEventListener('click', function(){
+    // ev.stopPropagation()
+    
+    // jika yg diklik sedang aktif tutup menu itu sendiri
+    if(this.classList.contains('show')){
+      this.classList.remove('show')
+    }else {
+      // jika yg diklik belum aktif, tutup semua menu
+      const optionButtons = document.querySelectorAll('.expand-option-button');
+      for (const optionBtn of optionButtons) {
+        optionBtn.classList.remove('show')
       }
-  
-    })
 
-    // event handler delete note button
-    const deleteBtn = noteComponent.querySelector('.delete');
-    deleteBtn.addEventListener('click', function(){
-      moveToTrash(noteComponent.id)
-      if(archived){
-        dispatchRenderEvent('archive')
-      } else {
-        dispatchRenderEvent("notes")
+      // check apakah tombol aktif jika tidak, buka menu dari button yang di klik
+      if(!this.classList.contains('show')){
+        this.classList.add('show')
       }
-    })
+    }
 
-    // event handler delete permanent
-    const deletePermanentBtn = noteComponent.querySelector('.delete-permanent');
-    deletePermanentBtn.addEventListener('click', function(){
-      deletePermanent(id);
-      dispatchRenderEvent('trash');
-    })
+  })
 
-    // restore handler
-    const restoreBtn = noteComponent.querySelector('.restore');
-    restoreBtn.addEventListener('click', function() {
-      restore(id);
-      dispatchRenderEvent('trash')
-    })
-
-    // event handler for archive note
-    const archiveBtn = noteComponent.querySelector('.archive-button');
-    archiveBtn.addEventListener('click', function(){
-      archiveNote(id)
+  // event handler delete note button
+  const deleteBtn = noteComponent.querySelector('.delete');
+  deleteBtn.addEventListener('click', function(){
+    moveToTrash(noteComponent.id)
+    if(archived){
+      dispatchRenderEvent('archive')
+    } else {
       dispatchRenderEvent("notes")
-    })
+    }
+  })
 
-    const unarchiveButton = noteComponent.querySelector('.unarchive-button');
-    unarchiveButton.addEventListener('click', function(){
-      unarchiveNote(id);
-      dispatchRenderEvent("archive")
-    })
+  // event handler delete permanent
+  const deletePermanentBtn = noteComponent.querySelector('.delete-permanent');
+  deletePermanentBtn.addEventListener('click', function(){
+    deletePermanent(id);
+    dispatchRenderEvent('trash');
+  })
 
-    // event handler for update note
-    const editBtn = noteComponent.querySelector('.edit');
-    editBtn.addEventListener('click', function(){
-      const modal = document.querySelector('.modal');
-      const noteForm = document.getElementById('add-note-form');
-      const titleInput = noteForm.querySelector('#title-input');
-      const bodyInput = noteForm.querySelector('#note-body-input');
-      const noteId = noteForm.querySelector('#note-id');
+  // restore handler
+  const restoreBtn = noteComponent.querySelector('.restore');
+  restoreBtn.addEventListener('click', function() {
+    restore(id);
+    dispatchRenderEvent('trash')
+  })
 
-      modal.classList.add('show');
-      noteForm.reset();
-      titleInput.value = title;
-      bodyInput.value = body
-      noteId.value = id;
+  // event handler for archive note
+  const archiveBtn = noteComponent.querySelector('.archive-button');
+  archiveBtn.addEventListener('click', function(){
+    archiveNote(id)
+    dispatchRenderEvent("notes")
+  })
 
-      document.getElementById('edit-note').removeAttribute('hidden')
-      document.getElementById('add-note').setAttribute('hidden', '')
-    })
+  const unarchiveButton = noteComponent.querySelector('.unarchive-button');
+  unarchiveButton.addEventListener('click', function(){
+    unarchiveNote(id);
+    dispatchRenderEvent("archive")
+  })
+
+  // event handler for update note
+  const editBtn = noteComponent.querySelector('.edit');
+  editBtn.addEventListener('click', function(){
+    const modal = document.querySelector('.modal');
+    const noteForm = document.getElementById('add-note-form');
+    const titleInput = noteForm.querySelector('#title-input');
+    const bodyInput = noteForm.querySelector('#note-body-input');
+    const noteId = noteForm.querySelector('#note-id');
+
+    modal.classList.add('show');
+    noteForm.reset();
+    titleInput.value = title;
+    bodyInput.value = body
+    noteId.value = id;
+
+    document.getElementById('edit-note').removeAttribute('hidden')
+    document.getElementById('add-note').setAttribute('hidden', '')
+  })
 
   return noteComponent
 }

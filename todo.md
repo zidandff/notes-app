@@ -13,6 +13,7 @@ TODO
 - refactor to OOP
 - reafactor fungsi render jadi custom event ✅
 - fix search function ✅
+- refactor modal event listener to event bubling stop propagation
 - create routing
 - refactor and ask feedback a whole project with chatgpt/claude
 
