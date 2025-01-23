@@ -1,13 +1,40 @@
-import { archiveNote, unarchiveNote, moveToTrash, deletePermanent, restore } from "../data/notesData.js";
-import {dispatchRenderEvent} from "../../app.js"
+import {
+  archiveNote,
+  unarchiveNote,
+  moveToTrash,
+  deletePermanent,
+  restore,
+} from '../data/notesData.js';
+import { dispatchRenderEvent } from '../../app.js';
 // import { render } from "../utility.js";
 
-export default function noteComponent({id, title, body, timestamp, color, archived, isDeleted}){
+export default function noteComponent({
+  id,
+  title,
+  body,
+  timestamp,
+  color,
+  archived,
+  isDeleted,
+}) {
   const noteComponent = document.createElement('div');
-  
-  const month = ['Jan', 'Feb', 'Mar', "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  const month = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
   const d = new Date(timestamp);
-  
+
   noteComponent.classList.add('note');
   noteComponent.classList.add(color);
   noteComponent.id = id;
@@ -48,12 +75,16 @@ export default function noteComponent({id, title, body, timestamp, color, archiv
               </svg>
             </button>
 
-            <button class="unarchive-button" ${archived && !isDeleted ? '' : "hidden"}>
+            <button class="unarchive-button" ${
+              archived && !isDeleted ? '' : 'hidden'
+            }>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 14.7292C10.2361 14.7292 10.4342 14.6492 10.5942 14.4892C10.7542 14.3292 10.8339 14.1314 10.8333 13.8958V11.2292L11.5833 11.9792C11.7361 12.132 11.9306 12.2083 12.1667 12.2083C12.4028 12.2083 12.5972 12.132 12.75 11.9792C12.9028 11.8264 12.9792 11.632 12.9792 11.3958C12.9792 11.1597 12.9028 10.9653 12.75 10.8125L10.5833 8.66667C10.4167 8.5 10.2222 8.41667 10 8.41667C9.77778 8.41667 9.58333 8.5 9.41667 8.66667L7.25 10.8125C7.09722 10.9653 7.02083 11.1597 7.02083 11.3958C7.02083 11.632 7.09722 11.8264 7.25 11.9792C7.40278 12.132 7.59722 12.2083 7.83333 12.2083C8.06944 12.2083 8.26389 12.132 8.41667 11.9792L9.16667 11.2292V13.8958C9.16667 14.1319 9.24667 14.33 9.40667 14.49C9.56667 14.65 9.76445 14.7297 10 14.7292ZM4.16667 6.66667V15.8333H15.8333V6.66667H4.16667ZM4.16667 17.5C3.70833 17.5 3.31611 17.337 2.99 17.0108C2.66389 16.6847 2.50056 16.2922 2.5 15.8333V5.4375C2.5 5.24306 2.53139 5.05556 2.59417 4.875C2.65694 4.69445 2.75056 4.52778 2.875 4.375L3.91667 3.10417C4.06944 2.90973 4.26028 2.76028 4.48917 2.65584C4.71806 2.55139 4.95778 2.49945 5.20833 2.5H14.7917C15.0417 2.5 15.2814 2.55223 15.5108 2.65667C15.7403 2.76112 15.9311 2.91028 16.0833 3.10417L17.125 4.375C17.25 4.52778 17.3439 4.69445 17.4067 4.875C17.4694 5.05556 17.5006 5.24306 17.5 5.4375V15.8333C17.5 16.2917 17.3369 16.6842 17.0108 17.0108C16.6847 17.3375 16.2922 17.5006 15.8333 17.5H4.16667ZM4.5 5H15.5L14.7917 4.16667H5.20833L4.5 5Z" fill="#EAEAEA"/>
               </svg>
             </button>
-            <button class="archive-button" ${archived || isDeleted ? "hidden" : ''}>
+            <button class="archive-button" ${
+              archived || isDeleted ? 'hidden' : ''
+            }>
               <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 6.66667C7.81111 6.66667 7.65289 6.73067 7.52533 6.85867C7.39778 6.98667 7.33378 7.14489 7.33333 7.33334V9.46667L6.73333 8.86667C6.61111 8.74445 6.45556 8.68334 6.26667 8.68334C6.07778 8.68334 5.92222 8.74445 5.8 8.86667C5.67778 8.98889 5.61667 9.14445 5.61667 9.33334C5.61667 9.52223 5.67778 9.67778 5.8 9.8L7.53333 11.5333C7.66667 11.6667 7.82222 11.7333 8 11.7333C8.17778 11.7333 8.33333 11.6667 8.46667 11.5333L10.2 9.8C10.3222 9.67778 10.3833 9.52223 10.3833 9.33334C10.3833 9.14445 10.3222 8.98889 10.2 8.86667C10.0778 8.74445 9.92222 8.68334 9.73333 8.68334C9.54445 8.68334 9.38889 8.74445 9.26667 8.86667L8.66667 9.46667V7.33334C8.66667 7.14445 8.60267 6.98623 8.47467 6.85867C8.34667 6.73112 8.18845 6.66712 8 6.66667ZM3.33333 5.33334V12.6667H12.6667V5.33334H3.33333ZM3.33333 14C2.96667 14 2.65289 13.8696 2.392 13.6087C2.13111 13.3478 2.00044 13.0338 2 12.6667V4.35C2 4.19445 2.02511 4.04445 2.07533 3.9C2.12556 3.75556 2.20044 3.62223 2.3 3.5L3.13333 2.48334C3.25556 2.32778 3.40822 2.20823 3.59133 2.12467C3.77444 2.04111 3.96622 1.99956 4.16667 2H11.8333C12.0333 2 12.2251 2.04178 12.4087 2.12534C12.5922 2.20889 12.7449 2.32823 12.8667 2.48334L13.7 3.5C13.8 3.62223 13.8751 3.75556 13.9253 3.9C13.9756 4.04445 14.0004 4.19445 14 4.35V12.6667C14 13.0333 13.8696 13.3473 13.6087 13.6087C13.3478 13.87 13.0338 14.0004 12.6667 14H3.33333ZM3.6 4H12.4L11.8333 3.33334H4.16667L3.6 4Z" fill="#EAEAEA"/>
               </svg>
@@ -62,76 +93,89 @@ export default function noteComponent({id, title, body, timestamp, color, archiv
         </div>
   `;
 
+  noteComponent.addEventListener('click', function () {
+    const fullNoteModal = document.getElementById('full-note-modal');
+    const modalDialog = fullNoteModal.querySelector('.modal-dialog');
+    const noteTitle = fullNoteModal.querySelector('h1');
+    const noteBody = fullNoteModal.querySelector('p');
+    const classColor = modalDialog.classList[1];
+
+    noteTitle.innerText = title;
+    noteBody.innerText = body;
+    modalDialog.classList.replace(classColor, color);
+    fullNoteModal.classList.add('show');
+  });
+
   // Stop event propagation to note action wrapper to prevent trigger notes event handler
   const noteActionWrapper = noteComponent.querySelector('.note-action-wrapper');
-  noteActionWrapper.addEventListener('click', (e)=> {
+  noteActionWrapper.addEventListener('click', (e) => {
+    ``;
     e.stopPropagation();
-  })
+  });
 
   // Event handler button expand option menu
   const optionBtn = noteComponent.querySelector('.expand-option-button');
-  optionBtn.addEventListener('click', function(){
+  optionBtn.addEventListener('click', function () {
     // ev.stopPropagation()
-    
+
     // jika yg diklik sedang aktif tutup menu itu sendiri
-    if(this.classList.contains('show')){
-      this.classList.remove('show')
-    }else {
+    if (this.classList.contains('show')) {
+      this.classList.remove('show');
+    } else {
       // jika yg diklik belum aktif, tutup semua menu
       const optionButtons = document.querySelectorAll('.expand-option-button');
       for (const optionBtn of optionButtons) {
-        optionBtn.classList.remove('show')
+        optionBtn.classList.remove('show');
       }
 
       // check apakah tombol aktif jika tidak, buka menu dari button yang di klik
-      if(!this.classList.contains('show')){
-        this.classList.add('show')
+      if (!this.classList.contains('show')) {
+        this.classList.add('show');
       }
     }
-
-  })
+  });
 
   // event handler delete note button
   const deleteBtn = noteComponent.querySelector('.delete');
-  deleteBtn.addEventListener('click', function(){
-    moveToTrash(noteComponent.id)
-    if(archived){
-      dispatchRenderEvent('archive')
+  deleteBtn.addEventListener('click', function () {
+    moveToTrash(noteComponent.id);
+    if (archived) {
+      dispatchRenderEvent('archive');
     } else {
-      dispatchRenderEvent("notes")
+      dispatchRenderEvent('notes');
     }
-  })
+  });
 
   // event handler delete permanent
   const deletePermanentBtn = noteComponent.querySelector('.delete-permanent');
-  deletePermanentBtn.addEventListener('click', function(){
+  deletePermanentBtn.addEventListener('click', function () {
     deletePermanent(id);
     dispatchRenderEvent('trash');
-  })
+  });
 
   // restore handler
   const restoreBtn = noteComponent.querySelector('.restore');
-  restoreBtn.addEventListener('click', function() {
+  restoreBtn.addEventListener('click', function () {
     restore(id);
-    dispatchRenderEvent('trash')
-  })
+    dispatchRenderEvent('trash');
+  });
 
   // event handler for archive note
   const archiveBtn = noteComponent.querySelector('.archive-button');
-  archiveBtn.addEventListener('click', function(){
-    archiveNote(id)
-    dispatchRenderEvent("notes")
-  })
+  archiveBtn.addEventListener('click', function () {
+    archiveNote(id);
+    dispatchRenderEvent('notes');
+  });
 
   const unarchiveButton = noteComponent.querySelector('.unarchive-button');
-  unarchiveButton.addEventListener('click', function(){
+  unarchiveButton.addEventListener('click', function () {
     unarchiveNote(id);
-    dispatchRenderEvent("archive")
-  })
+    dispatchRenderEvent('archive');
+  });
 
   // event handler for update note
   const editBtn = noteComponent.querySelector('.edit');
-  editBtn.addEventListener('click', function(){
+  editBtn.addEventListener('click', function () {
     const modal = document.querySelector('.modal');
     const noteForm = document.getElementById('add-note-form');
     const titleInput = noteForm.querySelector('#title-input');
@@ -141,12 +185,12 @@ export default function noteComponent({id, title, body, timestamp, color, archiv
     modal.classList.add('show');
     noteForm.reset();
     titleInput.value = title;
-    bodyInput.value = body
+    bodyInput.value = body;
     noteId.value = id;
 
-    document.getElementById('edit-note').removeAttribute('hidden')
-    document.getElementById('add-note').setAttribute('hidden', '')
-  })
+    document.getElementById('edit-note').removeAttribute('hidden');
+    document.getElementById('add-note').setAttribute('hidden', '');
+  });
 
-  return noteComponent
+  return noteComponent;
 }
