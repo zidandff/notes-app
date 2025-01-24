@@ -6,7 +6,6 @@ import {
   restore,
 } from '../data/notesData.js';
 import { dispatchRenderEvent } from '../../app.js';
-// import { render } from "../utility.js";
 
 export default function noteComponent({
   id,
